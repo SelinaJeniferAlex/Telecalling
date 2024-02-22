@@ -1,0 +1,16 @@
+/* app global css */
+/* @media(max-width:768px) {
+    *{
+        font-size: 10px;
+    }
+    
+} */
+.avatar-position{
+    justify-content: start!important;
+}
+.contact-hover:hover{
+    background-color: aliceblue;
+}
+.contact-hover:active{
+    background-color: aliceblue;
+}
