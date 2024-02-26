@@ -19,7 +19,7 @@
             <q-list padding>
               <br>
               <q-item class="q-ma-md text-white" clickable v-ripple>
-                <q-item-section avatar>
+                <q-item-section avatar class="self-start text-h5 text-weight-bold" :class="{ 'iconHide': !miniState }">
                   <q-icon name="T"></q-icon>
                 </q-item-section>
 
@@ -76,15 +76,15 @@
             so that user can switch back
             to mini-mode
           -->
-          <div class="q-mini-drawer-hide absolute" style="top: 50px; right: -17px">
+          <div class="q-mini-drawer absolute" style="top: 50px; right: -19px">
             <q-btn
               dense
               round
               unelevated
               class="text-blue"
               color="white"
-              icon="chevron_left"
-              @click="miniState = true"
+              :icon="miniState ? 'chevron_right' : 'chevron_left'"
+              @click="toggleMiniState"
             ></q-btn> 
           </div>
         </q-drawer>
@@ -118,28 +118,31 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export default {
   setup () {
+    const drawer = ref(false)
     const miniState = ref(false)
-
-    return {
-      drawer: ref(false),
-      miniState,
-
-      drawerClick (e) {
-        // if in "mini" state and user
-        // click on drawer, we switch it to "normal" mode
+    const toggleMiniState = () => {
+        miniState.value = !miniState.value
+      }
+    const miniDrawerIcon = computed(() => {
+      return miniState.value ? 'chevron_right' : 'chevron_left'
+    })
+    const drawerClick = (e) => {
         if (miniState.value) {
           miniState.value = false
-
-          // notice we have registered an event with capture flag;
-          // we need to stop further propagation as this click is
-          // intended for switching drawer to "normal" mode only
           e.stopPropagation()
         }
       }
+
+    return {
+        drawer,
+        miniState,
+        toggleMiniState,
+        drawerClick,
+        miniDrawerIcon
     }
   }
 }
@@ -149,4 +152,7 @@ export default {
   /* color: white; */
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
  }
+.iconHide {
+  display: none;
+  }
 </style>
